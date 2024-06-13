@@ -1,0 +1,19 @@
+{
+    "name": "sitemap-generator",
+    "version": "1.0.0",
+    "description": "A library to generate sitemaps in various formats",
+    "main": "src/SitemapGenerator.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+      "sitemap",
+      "generator",
+      "xml",
+      "csv",
+      "json"
+    ],
+    "author": "Vladimir Ushakov",
+    "license": "MIT",
+    "dependencies": {}
+  }
