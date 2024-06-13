@@ -1,6 +1,6 @@
 {
     "name": "sitemap-generator-custom-volodzya",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "A library to generate sitemaps in various formats",
     "main": "src/SitemapGenerator.js",
     "scripts": {
