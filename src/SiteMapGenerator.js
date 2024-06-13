@@ -4,13 +4,38 @@ const InvalidDataException = require('./exceptions/InvalidDataException');
 const FileAccessException = require('./exceptions/FileAccessException');
 
 class SitemapGenerator {
-    constructor(pages, fileType, filePath) {
-        this.validatePages(pages);
-        this.pages = pages;
+    constructor(basePath, fileType, filePath) {
+        this.basePath = basePath;
         this.fileType = fileType;
         this.filePath = filePath;
 
+        this.pages = this.getPages(this.basePath);
+        this.validatePages(this.pages);
+
         this.generateSitemap();
+    }
+
+    getPages(dir, baseURL = '') {
+        let pages = [];
+        const files = fs.readdirSync(dir);
+
+        files.forEach(file => {
+            const fullPath = path.join(dir, file);
+            const stat = fs.statSync(fullPath);
+
+            if (stat.isDirectory()) {
+                pages = pages.concat(this.getPages(fullPath, path.join(baseURL, file)));
+            } else if (file.endsWith('.html')) {
+                pages.push({
+                    loc: path.join(baseURL, file).replace(/\\/g, '/'),
+                    lastmod: stat.mtime.toISOString().split('T')[0],
+                    changefreq: 'daily',
+                    priority: '0.5'
+                });
+            }
+        });
+
+        return pages;
     }
 
     validatePages(pages) {
@@ -25,7 +50,11 @@ class SitemapGenerator {
         const directory = path.dirname(this.filePath);
 
         if (!fs.existsSync(directory)) {
-            fs.mkdirSync(directory, { recursive: true });
+            try {
+                fs.mkdirSync(directory, { recursive: true });
+            } catch (error) {
+                throw new FileAccessException(`Cannot create directory: ${directory}`);
+            }
         }
 
         switch (this.fileType) {

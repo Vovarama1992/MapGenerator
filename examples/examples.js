@@ -1,6 +1,6 @@
-const SitemapGenerator = require('../src/SitemapGenerator');
-const InvalidDataException = require('../src/exceptions/InvalidDataException');
-const FileAccessException = require('../src/exceptions/FileAccessException');
+const SitemapGenerator = require('sitemap-generator-custom-volodzya');
+const InvalidDataException = require('sitemap-generator-custom-volodzya/src/exceptions/InvalidDataException');
+const FileAccessException = require('sitemap-generator-custom-volodzya/src/exceptions/FileAccessException');
 
 const pages = [
     {
@@ -17,8 +17,8 @@ const pages = [
     }
 ];
 
-const fileType = 'xml'; 
-const filePath = '/var/www/site.ru/upload/sitemap.xml';
+const fileType = 'xml'; // можно использовать 'csv' или 'json'
+const filePath = './sitemap.xml'; // обновите путь в зависимости от вашей структуры
 
 try {
     new SitemapGenerator(pages, fileType, filePath);
